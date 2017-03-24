@@ -1,9 +1,9 @@
 <template>
   <ul class='items'>
     <li v-for='(item, index) in items' class='item'>
-      <img :src='"http://lorempixel.com/400/400/abstract/" + index' />
+      <img class='item-image' :src='"http://lorempixel.com/400/400/abstract/" + index' />
       <div>{{ item.name }} <span class='item-price'>${{ item.price }}</span></div>
-      <a href='#'>Add to Cart</a>
+      <a class='item-add' href='#' @click.prevent='addToCart(item)'>Add to Cart</a>
     </li>
   </ul>
 </template>
@@ -11,14 +11,14 @@
 <script>
 export default {
   name: 'items',
-  data () {
-    return {
-      items: [
-        { id: 4, name: 'The Ukulele Drones (LP3)', price: 25 },
-        { id: 3, name: 'Tectonic Microwave (LP1)', price: 15 },
-        { id: 2, name: 'Space Cardigan (LP2)', price: 15 },
-        { id: 1, name: 'Give Me Milk or Give Me Death (EP)', price: 8 }
-      ]
+  computed: {
+    items () {
+      return this.$store.state.items
+    }
+  },
+  methods: {
+    addToCart (item) {
+      this.$store.commit('addItem', item)
     }
   }
 }
@@ -39,11 +39,11 @@ export default {
   color: #999;
 }
 
-.item img {
+.item-image {
   height: 150px;
 }
 
-.item a {
+.item-add {
   display: block;
 }
 </style>

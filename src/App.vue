@@ -14,7 +14,7 @@ import Cart from './components/Cart.vue'
 
 export default {
   name: 'app',
-  components: { Items, Cart },
+  components: { Items, Cart }  // Expose these as components to use in our template.
 }
 </script>
 

@@ -2,29 +2,21 @@
   <div class='cart'>
     <span class='cart-label'>Cart:</span>
     <ul class='cart-items'>
-      <li v-for='item in cart'>
+      <li v-for='item in cartItems'>
         {{ item.name }} <span class='cart-quantity'>(x{{ item.quantity }})</span> <span class='cart-sep'>&middot;</span>
       </li>
     </ul>
-    <span class='cart-total'>Total: ${{ totalPrice }}</span>
+    <span class='cart-total'>Total: ${{ cartTotal }}</span>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
-  data () {
-    return {
-      cart: [
-        { id: 3, name: 'Space Cardigan (LP2)', price: 15, quantity: 2 },
-        { id: 2, name: 'Tectonic Microwave (LP1)', price: 15, quantity: 1 }
-      ]
-    }
-  },
-  computed: {
-    totalPrice () {
-      return this.cart.map(i => i.price * i.quantity).reduce((i, a) => i + a)
-    }
-  }
+  name: 'cart',
+  // mapGetters() takes a list of getter names and proxies them as values directly on the component.
+  computed: mapGetters(['cartItems', 'cartTotal'])
 }
 </script>
 
