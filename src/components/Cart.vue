@@ -16,7 +16,9 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'cart',
   // mapGetters() takes a list of getter names and proxies them as values directly on the component.
-  computed: mapGetters(['cartItems', 'cartTotal'])
+  computed: mapGetters(['cartTotal']),
+  computed: { cartItems: this.$state.cartItems}
+  
 }
 </script>
 

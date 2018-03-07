@@ -9,7 +9,7 @@ export default new Vuex.Store({
   // The global root state.
   state: {
     // Shopping cart.
-    cart: {},
+    cartItems: [],
     // Items available to purchase.
     items: [
       { id: 4, name: 'The Ukulele Drones (LP3)', price: 25 },
@@ -21,18 +21,9 @@ export default new Vuex.Store({
 
   // Calculated, reactive views into the state.
   getters: {
-    // All cart items, as a list.
-    cartItems (state) {
-      return Object.keys(state.cart).map(k => state.cart[k])
-    },
     // The total amount of dollars in the cart.
     cartTotal (state, getters) {
-      if (!getters.cartItems.length) {
-        return 0
-      }
-
-      // Sum of price*quantity for all items.
-      return getters.cartItems.map(i => i.price * i.quantity).reduce((acc, val) => acc + val)
+      return state.cartItems.map(i => i.item.price * i.item.quantity).reduce((acc, val) => acc + val)
     }
   },
 
@@ -40,21 +31,12 @@ export default new Vuex.Store({
   mutations: {
     // Adds an item to the cart.
     addItem (state, item) {
-      if (state.cart[item.id]) {
+      var storedItem = state.cartItems.filter(cartItem => cartItem.id === item.id)
+      if (storedItem !== null) {
         // Update quantity.
-        state.cart[item.id].quantity++
+        storedItem.quantity++
       } else {
-        // Set initial value.
-        //
-        // NOTE: Vue.set() is needed since we're defining new keys (IDs) that the Vue
-        // reactivity engine is not yet aware of. Otherwise simple array access, like above,
-        // would work.
-        Vue.set(state.cart, item.id, {
-          id: item.id,
-          quantity: 1,
-          price: item.price,
-          name: item.name
-        })
+        this.state.cartItems.push({quantity: 1, item: item})
       }
     }
   }
